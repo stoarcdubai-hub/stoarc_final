@@ -41,7 +41,7 @@ export default function AboutPage() {
       </section>
 
       {/* 2. Journey: History / Mission / Vision + stats */}
-      <About showMore={false} />
+      <About />
 
       {/* 3. Five pillars */}
       <Pillars />
