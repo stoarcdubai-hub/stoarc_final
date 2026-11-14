@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { media } from "@/content/media";
 import { site } from "@/content/site";
 import LazyVideo from "./LazyVideo";
@@ -8,21 +7,15 @@ import LazyVideo from "./LazyVideo";
 export default function Hero() {
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink text-white">
-      {/* Background: optimised still image first (fast), video plays over it */}
-      <Image
-        src={media.hero.poster}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-        aria-hidden="true"
-      />
-      {/* Background video (full clip, loops); zoomed from top-left to crop out the ✦ mark */}
-      <LazyVideo
-        className="absolute inset-0 h-full w-full origin-top-left scale-[1.15] object-cover"
-        src={media.hero.video}
-      />
+      {/* Background video: PC/tablet only (phones skip it so the middle video loads fast).
+          Zoomed from top-left to crop out the ✦ mark. */}
+      <div className="absolute inset-0 hidden md:block" aria-hidden="true">
+        <LazyVideo
+          className="h-full w-full origin-top-left scale-[1.15] object-cover"
+          src={media.hero.video}
+          eager
+        />
+      </div>
 
       {/* Darken so text and the window stand out: overall black shade + stronger fade at the bottom */}
       <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
@@ -35,12 +28,12 @@ export default function Hero() {
         {/* Centre: framed landscape video window
             Phone 320px · Tablet 380px · PC 420px · Large screens 520px */}
         <div className="flex flex-1 items-center justify-center py-8">
-          <div className="group relative aspect-[16/10] w-full max-w-[320px] overflow-hidden rounded-xl border border-white/20 shadow-2xl sm:max-w-[380px] md:max-w-[420px] 2xl:max-w-[520px]">
-            {/* Zoomed from top-left so the bottom-right corner (✦ mark) is cropped out */}
+          <div className="group relative aspect-[16/10] w-full max-w-[320px] overflow-hidden rounded-xl border border-white/20 bg-ink shadow-2xl sm:max-w-[380px] md:max-w-[420px] 2xl:max-w-[520px]">
+            {/* eager = starts downloading immediately; zoomed to crop out the ✦ mark */}
             <LazyVideo
               className="absolute inset-0 h-full w-full origin-top-left scale-[1.15] object-cover transition duration-700 group-hover:scale-[1.2]"
               src={media.hero.insetVideo}
-              poster={media.hero.insetPoster}
+              eager
             />
             <div className="absolute inset-0 bg-ink/20" aria-hidden="true" />
             <Link
