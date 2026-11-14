@@ -26,7 +26,6 @@ export default function ProjectsSection() {
       const rect = section.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-      // Move the row of slides sideways as you scroll down
       track.style.transform = `translate3d(${-progress * (count - 1) * 100}vw, 0, 0)`;
       if (barRef.current) barRef.current.style.transform = `scaleX(${progress})`;
       setActive(Math.round(progress * (count - 1)));
@@ -51,7 +50,7 @@ export default function ProjectsSection() {
     if (!section) return;
     const top = section.offsetTop;
     const scrollable = section.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: top + (scrollable * i) / (count - 1), behavior: "smooth" });
+    window.scrollTo({ top: top + (scrollable * i) / Math.max(1, count - 1), behavior: "smooth" });
   };
 
   return (
@@ -115,7 +114,8 @@ export default function ProjectsSection() {
                         className="object-cover"
                         priority={i === 0}
                       />
-                      {isActive && (
+                      {/* Only play a video if this project has one */}
+                      {isActive && p.video && (
                         <video
                           className="absolute inset-0 h-full w-full object-cover"
                           src={p.video}

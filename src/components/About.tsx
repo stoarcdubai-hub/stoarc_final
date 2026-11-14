@@ -40,16 +40,17 @@ const stats = [
   { value: "12+", label: "Countries" },
 ];
 
-/** Section 4: About Our Journey — History / Mission / Vision capsules + stats */
+/** Section 4: About Our Journey — History / Mission / Vision capsules + stats
+ *  Phone sizes are compact; desktop (md:) values unchanged. */
 export default function About() {
   const [tab, setTab] = useState<TabKey>("history");
   const current = content[tab];
 
   return (
     <section id="about" className="bg-sand">
-      <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-6 py-24 md:grid-cols-2 md:gap-20 md:px-10 md:py-36">
-        {/* Video */}
-        <div className="reveal relative aspect-[4/5] overflow-hidden rounded-md bg-line">
+      <div className="mx-auto grid max-w-[1440px] items-center gap-8 px-6 py-14 md:grid-cols-2 md:gap-20 md:px-10 md:py-36">
+        {/* Video — short wide card on phones, tall on desktop */}
+        <div className="reveal relative aspect-[16/10] overflow-hidden rounded-md bg-line md:aspect-[4/5]">
           <video
             className="absolute inset-0 h-full w-full object-cover"
             src={media.about.video}
@@ -66,11 +67,11 @@ export default function About() {
         {/* Text */}
         <div className="reveal">
           <p className="text-xs tracking-[0.2em] text-earth">03 — ABOUT STOARC</p>
-          <h2 className="font-display mt-3 text-4xl font-semibold leading-tight md:text-6xl">About our journey</h2>
+          <h2 className="font-display mt-3 text-3xl font-semibold leading-tight md:text-6xl">About our journey</h2>
 
           {/* Capsule tabs */}
           <div
-            className="mt-8 inline-flex rounded-full border border-[#C6A36A]/60 bg-white/40 p-1 backdrop-blur-sm"
+            className="mt-5 inline-flex rounded-full border border-[#C6A36A]/60 bg-white/40 p-1 backdrop-blur-sm md:mt-8"
             role="tablist"
             aria-label="About STOARC"
           >
@@ -83,7 +84,7 @@ export default function About() {
                 aria-selected={tab === t.key}
                 aria-controls="about-panel"
                 onClick={() => setTab(t.key)}
-                className={`min-h-10 rounded-full px-5 text-sm transition md:px-6 ${
+                className={`min-h-9 rounded-full px-4 text-sm transition md:min-h-10 md:px-6 ${
                   tab === t.key ? "bg-ink text-sand" : "text-earth hover:text-ink"
                 }`}
               >
@@ -98,26 +99,26 @@ export default function About() {
             role="tabpanel"
             aria-labelledby={`tab-${tab}`}
             key={tab}
-            className="mt-8 min-h-[260px] animate-[fadeIn_0.5s_ease]"
+            className="mt-5 min-h-[200px] animate-[fadeIn_0.5s_ease] md:mt-8 md:min-h-[260px]"
           >
             {current.paragraphs.map((p) => (
-              <p key={p} className="mb-4 text-base leading-relaxed text-ink/80 md:text-lg">
+              <p key={p} className="mb-3 text-[15px] leading-relaxed text-ink/80 md:mb-4 md:text-lg">
                 {p}
               </p>
             ))}
             {current.quote && (
-              <blockquote className="font-display mt-6 border-l-2 border-[#C6A36A] pl-5 text-xl italic text-ink md:text-2xl">
+              <blockquote className="font-display mt-4 border-l-2 border-[#C6A36A] pl-4 text-lg italic text-ink md:mt-6 md:pl-5 md:text-2xl">
                 “{current.quote}”
               </blockquote>
             )}
           </div>
 
           {/* Stats */}
-          <dl className="mt-8 grid grid-cols-3 gap-4 border-t border-line pt-8">
+          <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-6 md:mt-8 md:pt-8">
             {stats.map((s) => (
               <div key={s.label}>
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="font-display text-4xl font-semibold md:text-5xl">{s.value}</dd>
+                <dd className="font-display text-3xl font-semibold md:text-5xl">{s.value}</dd>
                 <dd className="mt-1 text-xs text-earth md:text-sm">{s.label}</dd>
               </div>
             ))}
@@ -126,7 +127,7 @@ export default function About() {
           {/* More about us capsule */}
           <Link
             href="/about"
-            className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-full border border-[#C6A36A]/70 px-7 text-sm transition hover:bg-[#C6A36A] hover:text-ink"
+            className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full border border-[#C6A36A]/70 px-7 text-sm transition hover:bg-[#C6A36A] hover:text-ink md:mt-10"
           >
             More about us <span aria-hidden="true">→</span>
           </Link>

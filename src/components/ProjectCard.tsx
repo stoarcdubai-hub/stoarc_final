@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import type { Project } from "@/content/projects";
 
-/** Photo by default; plays the project's video on hover (desktop). */
-export default function ProjectCard({ project }: { project: Project }) {
+/** Photo by default; plays the project's video on hover (desktop), if it has one. */
+export default function ProjectCard({ project }: { project: Project; index?: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
@@ -30,16 +30,18 @@ export default function ProjectCard({ project }: { project: Project }) {
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover transition duration-700 group-hover:scale-[1.03]"
         />
-        <video
-          ref={videoRef}
-          src={project.video}
-          muted
-          loop
-          playsInline
-          preload="none"
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
-        />
+        {project.video && (
+          <video
+            ref={videoRef}
+            src={project.video}
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
+          />
+        )}
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-4">
         <h3 className="font-display text-xl font-semibold md:text-2xl">{project.name}</h3>

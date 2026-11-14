@@ -36,14 +36,16 @@ const pillars: Pillar[] = [
   },
 ];
 
-/** The five STOARC pillars: number, line, icon, name, text. */
+/** The five STOARC pillars.
+ *  Phone/tablet: compact rows (icon left, text right).
+ *  Desktop: 5 columns with big numbers. */
 export default function Pillars() {
   return (
     <section id="pillars" className="bg-white">
-      <div className="mx-auto max-w-[1440px] px-6 py-24 md:px-10 md:py-32">
-        <div className="reveal mb-14 md:mb-20">
+      <div className="mx-auto max-w-[1440px] px-6 py-16 md:px-10 md:py-28">
+        <div className="reveal mb-8 md:mb-16">
           <p className="text-xs tracking-[0.2em] text-earth">OUR APPROACH</p>
-          <h2 className="font-display mt-3 max-w-2xl text-4xl font-semibold leading-tight md:text-5xl">
+          <h2 className="font-display mt-3 max-w-2xl text-3xl font-semibold leading-tight md:text-5xl">
             Five ways we think about building
           </h2>
         </div>
@@ -52,24 +54,25 @@ export default function Pillars() {
           {pillars.map(({ n, name, text, Icon }) => (
             <article
               key={n}
-              className="reveal group flex flex-col items-center border-b border-line px-6 py-12 text-center sm:border-r lg:border-b-0 lg:last:border-r-0"
+              className="reveal group flex items-start gap-4 border-b border-line py-6 sm:px-4 lg:flex-col lg:items-center lg:gap-0 lg:border-b-0 lg:border-r lg:px-6 lg:py-12 lg:text-center lg:last:border-r-0"
             >
-              {/* Big number */}
-              <span className="font-display text-7xl font-semibold leading-none text-line transition-colors duration-500 group-hover:text-earth md:text-8xl">
+              {/* Big number — desktop only */}
+              <span className="font-display hidden text-8xl font-semibold leading-none text-line transition-colors duration-500 group-hover:text-earth lg:block">
                 {n}
               </span>
+              <span className="my-8 hidden h-px w-full bg-line lg:block" />
 
-              {/* Divider */}
-              <span className="my-8 h-px w-full bg-line" />
-
-              {/* Icon in circle */}
-              <span className="flex h-28 w-28 items-center justify-center rounded-full border border-line transition-colors duration-500 group-hover:border-earth group-hover:bg-sand">
-                <Icon className="h-9 w-9 text-ink" strokeWidth={1.25} aria-hidden="true" />
+              {/* Icon in circle — small on phones, large on desktop */}
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line transition-colors duration-500 group-hover:border-earth group-hover:bg-sand lg:h-28 lg:w-28">
+                <Icon className="h-6 w-6 text-ink lg:h-9 lg:w-9" strokeWidth={1.25} aria-hidden="true" />
               </span>
 
-              {/* Name + text */}
-              <h3 className="font-display mt-8 text-2xl font-semibold">{name}</h3>
-              <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-earth">{text}</p>
+              {/* Text */}
+              <div className="min-w-0 lg:mt-8">
+                <p className="text-[11px] tracking-[0.2em] text-earth lg:hidden">{n}</p>
+                <h3 className="font-display text-lg font-semibold lg:text-2xl">{name}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-earth lg:mx-auto lg:mt-4 lg:max-w-[280px]">{text}</p>
+              </div>
             </article>
           ))}
         </div>
