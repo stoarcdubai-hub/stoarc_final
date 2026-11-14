@@ -18,10 +18,15 @@ export default function Hero() {
         className="object-cover"
         aria-hidden="true"
       />
-      <LazyVideo className="absolute inset-0 h-full w-full object-cover" src={media.hero.video} />
+      {/* Background video (full clip, loops); zoomed from top-left to crop out the ✦ mark */}
+      <LazyVideo
+        className="absolute inset-0 h-full w-full origin-top-left scale-[1.15] object-cover"
+        src={media.hero.video}
+      />
 
-      {/* Darken so text and the window stand out */}
-      <div className="absolute inset-0 bg-ink/45" aria-hidden="true" />
+      {/* Darken so text and the window stand out: overall black shade + stronger fade at the bottom */}
+      <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/60 to-transparent" aria-hidden="true" />
 
       <div className="relative mx-auto flex min-h-[100svh] max-w-[1440px] flex-col px-5 pt-24 pb-8 sm:px-6 md:px-10 md:pt-28 md:pb-10 2xl:max-w-[1680px]">
         {/* Top line */}
@@ -31,8 +36,9 @@ export default function Hero() {
             Phone 320px · Tablet 380px · PC 420px · Large screens 520px */}
         <div className="flex flex-1 items-center justify-center py-8">
           <div className="group relative aspect-[16/10] w-full max-w-[320px] overflow-hidden rounded-xl border border-white/20 shadow-2xl sm:max-w-[380px] md:max-w-[420px] 2xl:max-w-[520px]">
+            {/* Zoomed from top-left so the bottom-right corner (✦ mark) is cropped out */}
             <LazyVideo
-              className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              className="absolute inset-0 h-full w-full origin-top-left scale-[1.15] object-cover transition duration-700 group-hover:scale-[1.2]"
               src={media.hero.insetVideo}
               poster={media.hero.insetPoster}
             />

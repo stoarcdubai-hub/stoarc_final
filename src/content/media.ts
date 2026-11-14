@@ -16,10 +16,10 @@ const photo = (seed: string, w = 1600, h = 1000) =>
   `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
 export const media = {
-    hero: {
-    video: mixkit(8631), // background: holiday house in a field, aerial view
+  hero: {
+    video: "/videos/hero-bg.mp4", // background: holiday house in a field, aerial view
     poster: photo("stoarc-hero", 1920, 1080),
-    insetVideo: mixkit(29514), // middle window: house alone on a hill
+    insetVideo: "/videos/hero-inset.mp4", // middle window: house alone on a hill
     insetPoster: photo("stoarc-hero-inset", 1200, 750),
   },
   about: {
@@ -36,6 +36,6 @@ export const media = {
   },
   gallery: (projectSeed: string, count = 4) =>
     Array.from({ length: count }, (_, i) => photo(`${projectSeed}-g${i + 1}`, 1600, 1100)),
-  /** 3D model for the Structure section. null = built-in placeholder building. */
-  model3d: null as string | null, // later: "/models/stoarc-building.glb"
+  /** 3D model for the Structure section (STOARC's own model, compressed). */
+  model3d: "/models/stoarc-model.glb" as string | null,
 };
