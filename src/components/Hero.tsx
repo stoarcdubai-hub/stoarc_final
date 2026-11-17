@@ -7,9 +7,9 @@ import LazyVideo from "./LazyVideo";
 export default function Hero() {
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink text-white">
-      {/* Background video: PC/tablet only (phones skip it so the middle video loads fast).
+      {/* Background video: plays on all devices (phones and PC).
           Zoomed from top-left to crop out the ✦ mark. */}
-      <div className="absolute inset-0 hidden md:block" aria-hidden="true">
+      <div className="absolute inset-0" aria-hidden="true">
         <LazyVideo
           className="h-full w-full origin-top-left scale-[1.15] object-cover"
           src={media.hero.video}
