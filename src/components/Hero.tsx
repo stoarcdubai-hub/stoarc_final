@@ -2,8 +2,9 @@ import Link from "next/link";
 import { media } from "@/content/media";
 import { site } from "@/content/site";
 import LazyVideo from "./LazyVideo";
+import HeroSlideshow from "./HeroSlideshow";
 
-/** Section 1: full-screen background video + framed video window in the middle */
+/** Section 1: full-screen background video + framed image slideshow in the middle */
 export default function Hero() {
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-ink text-white">
@@ -25,26 +26,14 @@ export default function Hero() {
         {/* Top line */}
         <p className="text-[10px] tracking-[0.3em] text-sand/90 sm:text-xs">ARCHITECTURE · INTERIORS · PLANNING</p>
 
-        {/* Centre: framed landscape video window
+        {/* Centre: framed landscape window (image slideshow)
             Phone 320px · Tablet 380px · PC 420px · Large screens 520px */}
         <div className="flex flex-1 items-center justify-center py-8">
           <div className="group relative aspect-[16/10] w-full max-w-[320px] overflow-hidden rounded-xl border border-white/20 bg-ink shadow-2xl sm:max-w-[380px] md:max-w-[420px] 2xl:max-w-[520px]">
-            {/* eager = starts downloading immediately; zoomed to crop out the ✦ mark */}
-            <LazyVideo
-              className="absolute inset-0 h-full w-full origin-top-left scale-[1.15] object-cover transition duration-700 group-hover:scale-[1.2]"
-              src={media.hero.insetVideo}
-              eager
-            />
-            <div className="absolute inset-0 bg-ink/20" aria-hidden="true" />
-            <Link
-              href="/#about"
-              className="absolute inset-0 flex items-center justify-center"
-              aria-label="Watch our story"
-            >
-              <span className="flex items-center gap-3 rounded-full border border-white/70 bg-ink/30 px-5 py-2.5 text-[11px] tracking-[0.25em] backdrop-blur-sm transition group-hover:bg-white group-hover:text-ink">
-                <span aria-hidden="true">▶</span> OUR STORY
-              </span>
-            </Link>
+            <div className="absolute inset-0 transition duration-700 group-hover:scale-[1.04]">
+              <HeroSlideshow />
+            </div>
+            <div className="absolute inset-0 bg-ink/10" aria-hidden="true" />
           </div>
         </div>
 
