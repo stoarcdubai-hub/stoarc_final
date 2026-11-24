@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { media } from "@/content/media";
+import { useEffect, useRef, useState } from "react";
 
 type TabKey = "history" | "mission" | "vision";
 
@@ -42,12 +42,61 @@ const stats = [
 
 /** Section 4: About Our Journey.
  *  Phone: heading → photo → full-width tabs → short text + Read more → boxed stats → full-width button.
- *  Desktop (md:) layout unchanged. */
+ *  Desktop (md:) layout unchanged.
+ *  Scroll: the section pins in place, photo 2 slides up over photo 1, then the page continues. */
 export default function About() {
   const [tab, setTab] = useState<TabKey>("history");
   const [expanded, setExpanded] = useState(false);
   const current = content[tab];
   const hasMore = current.paragraphs.length > 1 || !!current.quote;
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
+  const firstRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
+
+  // Pinned scroll: while the section is held in place, progress 0 → 1 swaps photo 1 for photo 2.
+  useEffect(() => {
+    const section = sectionRef.current;
+    const sticky = stickyRef.current;
+    const spacer = spacerRef.current;
+    const first = firstRef.current;
+    const second = secondRef.current;
+    if (!section || !sticky || !spacer || !first || !second) return;
+
+    const desktop = window.matchMedia("(min-width: 768px)");
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      // Phone: pin with the heading at the top (as in the design).
+      // Desktop: pin vertically centred; if taller than the screen, centre it anyway.
+      const top = desktop.matches ? Math.min(0, (vh - sticky.offsetHeight) / 2) : 0;
+      sticky.style.top = `${top}px`;
+
+      // How far we've scrolled since the section pinned, as 0 → 1.
+      // Finishes at 80% so photo 2 holds for a moment before the page moves on.
+      const scrolled = top - section.getBoundingClientRect().top;
+      const p = Math.min(1, Math.max(0, scrolled / (spacer.offsetHeight * 0.8)));
+
+      second.style.clipPath = `inset(${(1 - p) * 100}% 0 0 0)`;
+      first.style.transform = `scale(${1 + p * 0.06})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const changeTab = (key: TabKey) => {
     setTab(key);
@@ -55,27 +104,43 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="bg-sand">
-      <div className="mx-auto grid max-w-[1440px] items-center gap-6 px-6 py-16 md:grid-cols-2 md:gap-20 md:px-10 md:py-36">
+    <section ref={sectionRef} id="about" className="relative bg-sand">
+      {/* Pinned content */}
+      <div
+        ref={stickyRef}
+        className="sticky top-0 mx-auto grid max-w-[1440px] items-center gap-6 px-6 py-16 md:grid-cols-2 md:gap-20 md:px-10 md:py-36"
+      >
         {/* Phone-only heading (shown above the photo) */}
         <div className="reveal md:hidden">
           <p className="text-[11px] tracking-[0.25em] text-earth">03 — ABOUT STOARC</p>
           <h2 className="font-display mt-2 text-[32px] font-semibold leading-tight">About our journey</h2>
         </div>
 
-        {/* Video */}
-        <div className="reveal relative aspect-[4/3] overflow-hidden rounded-2xl bg-line md:aspect-[4/5] md:rounded-md">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            src={media.about.video}
-            poster={media.about.photo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          />
+        {/* Photos — phone: height follows photo 1, no crop; desktop: 4:5 frame. Photo 2 slides up while pinned. */}
+        <div className="reveal relative overflow-hidden rounded-2xl bg-line md:aspect-[4/5] md:rounded-md">
+          <div ref={firstRef} className="will-change-transform md:absolute md:inset-0">
+            <Image
+              src="/images/about-studio.jpg"
+              alt="STOARC team receiving an industry award"
+              width={0}
+              height={0}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="block h-auto w-full md:h-full md:object-cover"
+            />
+          </div>
+          <div
+            ref={secondRef}
+            className="absolute inset-0 will-change-[clip-path]"
+            style={{ clipPath: "inset(100% 0 0 0)" }}
+          >
+            <Image
+              src="/images/about-studio-2.jpg"
+              alt="Design Awards 2026 trophy — STOARC, winner of Restaurant Design of the Year"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         {/* Text */}
@@ -172,6 +237,9 @@ export default function About() {
           </Link>
         </div>
       </div>
+
+      {/* Scroll distance while pinned — how long the photo change lasts */}
+      <div ref={spacerRef} aria-hidden="true" className="h-[80vh] md:h-screen" />
     </section>
   );
 }
