@@ -10,9 +10,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-        <About />
       <ProjectsSection />
       <StructureSection />
+      <About />
         <Pillars />
 
     </>

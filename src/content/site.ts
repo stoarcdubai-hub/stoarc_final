@@ -6,12 +6,12 @@ export const site = {
     "STOARC is an architecture and interiors studio designing homes, workplaces and public spaces.",
   about:
     "[Studio story: when STOARC was founded, by whom, where you are based, and what drives your work.]",
-  address: ["Office 609, Al Qusais Plaza , Damascus St","United Arab Emirates"],
-  phone: "+971 45656436",
-  email: "info@stoarc.ae",
+  address: ["[Office address]", "[City], United Arab Emirates"],
+  phone: "[+971 00 000 0000]",
+  email: "[hello@stoarc.com]",
   social: [
-    { label: "Instagram", href: "https://www.instagram.com/stoarc.uae?dmpr=MWQ0MmVtNmloOWZjYw%3D%3D&utm_source=qr" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/company/stoarc-architectural-consultancy/" },
+    { label: "Instagram", href: "#" },
+    { label: "LinkedIn", href: "#" },
   ],
   nav: [
     { label: "Projects", href: "/projects" },
