@@ -2,8 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import About from "@/components/About";
 import Pillars from "@/components/Pillars";
+import { site } from "@/content/site";
 
-export const metadata: Metadata = { title: "About" };
+// Same wording as the intro paragraph on this page.
+const description =
+  "STOARC is a studio of architects working across residential communities, mixed-use developments, commercial towers and urban masterplans — always placing human experience at the centre of design.";
+
+export const metadata: Metadata = {
+  title: "About",
+  description,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    url: "/about",
+    title: `About — ${site.name}`,
+    description,
+  },
+};
 
 const services = [
   { n: "01", name: "Architecture", text: "New buildings from concept through construction documents — residential, commercial and mixed-use." },
@@ -41,7 +57,7 @@ export default function AboutPage() {
       </section>
 
       {/* 2. Journey: History / Mission / Vision + stats */}
-      <About />
+      <About showMoreLink={false} />
 
       {/* 3. Five pillars */}
       <Pillars />

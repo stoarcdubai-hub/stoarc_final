@@ -14,9 +14,14 @@ const heading = Manrope({ subsets: ["latin"], variable: "--font-heading", displa
 const GA_ID = "G-DK43F6N3BB";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.stoarcarchitects.com"),
+  metadataBase: new URL(site.url),
   title: { default: `${site.name} — ${site.tagline}`, template: `%s — ${site.name}` },
   description: site.description,
+  // Shared by every page. Each page sets its own canonical URL and preview title.
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,17 +1,16 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
+import { site } from "@/content/site";
 
-const BASE = "https://www.stoarcarchitects.com";
+const BASE = site.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
   return [
-    { url: `${BASE}/`, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${BASE}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/projects`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/`, changeFrequency: "monthly", priority: 1 },
+    { url: `${BASE}/about`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/projects`, changeFrequency: "weekly", priority: 0.9 },
     ...projects.map((p) => ({
       url: `${BASE}/projects/${p.slug}`,
-      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

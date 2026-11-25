@@ -1,6 +1,7 @@
 /** Company details used across the site. Replace the [placeholders]. */
 export const site = {
   name: "STOARC",
+  url: "https://www.stoarcarchitects.com",
   tagline: "Architecture that lasts",
   description:
     "STOARC is an architecture and interiors studio designing homes, workplaces and public spaces.",
@@ -10,7 +11,7 @@ export const site = {
   phone: "+971 45656436",
   email: "info@stoarc.ae",
   social: [
-    { label: "Instagram", href: "https://www.instagram.com/stoarc.uae?dmpr=MWQ0MmVtNmloOWZjYw%3D%3D&utm_source=qr" },
+    { label: "Instagram", href: "https://www.instagram.com/stoarc.uae" },
     { label: "LinkedIn", href: "https://www.linkedin.com/company/stoarc-architectural-consultancy/" },
   ],
   nav: [

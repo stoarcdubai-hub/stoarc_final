@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects, getProject } from "@/content/projects";
+import { site } from "@/content/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -13,7 +14,22 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  return { title: project?.name ?? "Project" };
+  if (!project) return { title: "Project" };
+
+  const url = `/projects/${slug}`;
+  return {
+    title: project.name,
+    description: project.summary,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      siteName: site.name,
+      url,
+      title: `${project.name} — ${site.name}`,
+      description: project.summary,
+      images: [{ url: project.cover, alt: project.name }],
+    },
+  };
 }
 
 /** /projects/[slug]: one project */

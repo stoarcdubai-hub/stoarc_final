@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
 import { projects } from "@/content/projects";
+import { site } from "@/content/site";
 import ProjectCard from "@/components/ProjectCard";
 
-export const metadata: Metadata = { title: "Projects" };
+const description = "Selected projects by STOARC — homes, workplaces and public spaces.";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description,
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    url: "/projects",
+    title: `Projects — ${site.name}`,
+    description,
+  },
+};
 
 /** /projects: all projects */
 export default function ProjectsPage() {

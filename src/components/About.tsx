@@ -42,9 +42,9 @@ const stats = [
 
 /** Section 4: About Our Journey.
  *  Phone: heading → photo → full-width tabs → short text + Read more → boxed stats → full-width button.
- *  Desktop (md:) layout unchanged.
+ *  Desktop: same two-column layout, sized down to fit one screen.
  *  Scroll: the section pins in place, photo 2 slides up over photo 1, then the page continues. */
-export default function About() {
+export default function About({ showMoreLink = true }: { showMoreLink?: boolean }) {
   const [tab, setTab] = useState<TabKey>("history");
   const [expanded, setExpanded] = useState(false);
   const current = content[tab];
@@ -108,16 +108,15 @@ export default function About() {
       {/* Pinned content */}
       <div
         ref={stickyRef}
-        className="sticky top-0 mx-auto grid max-w-[1440px] items-center gap-6 px-6 py-16 md:grid-cols-2 md:gap-20 md:px-10 md:py-36"
+        className="sticky top-0 mx-auto grid max-w-[1440px] items-center gap-6 px-6 py-16 md:grid-cols-2 md:gap-12 md:px-10 md:py-20"
       >
         {/* Phone-only heading (shown above the photo) */}
         <div className="reveal md:hidden">
-          <p className="text-[11px] tracking-[0.25em] text-earth">03 — ABOUT STOARC</p>
-          <h2 className="font-display mt-2 text-[32px] font-semibold leading-tight">About our journey</h2>
+          <h2 className="font-display text-[32px] font-semibold leading-tight">About our journey</h2>
         </div>
 
         {/* Photos — phone: height follows photo 1, no crop; desktop: 4:5 frame. Photo 2 slides up while pinned. */}
-        <div className="reveal relative overflow-hidden rounded-2xl bg-line md:aspect-[4/5] md:rounded-md">
+        <div className="reveal relative overflow-hidden rounded-2xl bg-line md:aspect-[4/5] md:max-h-[calc(100vh-10rem)] md:rounded-md">
           <div ref={firstRef} className="will-change-transform md:absolute md:inset-0">
             <Image
               src="/images/about-studio.jpg"
@@ -146,12 +145,11 @@ export default function About() {
         {/* Text */}
         <div className="reveal">
           {/* Desktop heading */}
-          <p className="hidden text-xs tracking-[0.2em] text-earth md:block">03 — ABOUT STOARC</p>
-          <h2 className="font-display mt-3 hidden text-6xl font-semibold leading-tight md:block">About our journey</h2>
+          <h2 className="font-display hidden text-5xl font-semibold leading-tight md:block">About our journey</h2>
 
           {/* Capsule tabs — full width with equal parts on phones */}
           <div
-            className="grid w-full grid-cols-3 rounded-full border border-[#C6A36A]/60 bg-white/40 p-1 backdrop-blur-sm md:mt-8 md:inline-flex md:w-auto"
+            className="grid w-full grid-cols-3 rounded-full border border-[#C6A36A]/60 bg-white/40 p-1 backdrop-blur-sm md:mt-6 md:inline-flex md:w-auto"
             role="tablist"
             aria-label="About STOARC"
           >
@@ -179,12 +177,12 @@ export default function About() {
             role="tabpanel"
             aria-labelledby={`tab-${tab}`}
             key={tab}
-            className="mt-6 animate-[fadeIn_0.5s_ease] md:mt-8 md:min-h-[260px]"
+            className="mt-6 animate-[fadeIn_0.5s_ease] md:mt-6 md:min-h-[200px]"
           >
             {current.paragraphs.map((p, i) => (
               <p
                 key={p}
-                className={`mb-3 text-[15px] leading-relaxed text-ink/80 md:mb-4 md:block md:text-lg ${
+                className={`mb-3 text-[15px] leading-relaxed text-ink/80 md:mb-4 md:block md:text-base ${
                   i > 0 && !expanded ? "hidden" : ""
                 }`}
               >
@@ -193,7 +191,7 @@ export default function About() {
             ))}
             {current.quote && (
               <blockquote
-                className={`font-display mt-4 border-l-2 border-[#C6A36A] pl-4 text-lg italic text-ink md:mt-6 md:block md:pl-5 md:text-2xl ${
+                className={`font-display mt-4 border-l-2 border-[#C6A36A] pl-4 text-lg italic text-ink md:mt-6 md:block md:pl-5 md:text-xl ${
                   expanded ? "" : "hidden"
                 }`}
               >
@@ -214,27 +212,28 @@ export default function About() {
             )}
           </div>
 
-          {/* Stats — boxed with dividers on phones, open row on desktop */}
-          <dl className="mt-8 grid grid-cols-3 divide-x divide-[#C6A36A]/30 overflow-hidden rounded-2xl border border-[#C6A36A]/40 bg-white/40 text-center md:gap-4 md:divide-x-0 md:overflow-visible md:rounded-none md:border-x-0 md:border-b-0 md:border-t md:border-line md:bg-transparent md:pt-8 md:text-left">
+          {/* Stats — same boxed row with dividers on phone and desktop */}
+          <div className="mt-8 grid grid-cols-3 divide-x divide-[#C6A36A]/30 overflow-hidden rounded-2xl border border-[#C6A36A]/40 bg-white/40 text-center md:mt-6">
             {stats.map((s) => (
-              <div key={s.label} className="px-2 py-5 md:p-0">
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="font-display text-[28px] font-semibold leading-none md:text-5xl">{s.value}</dd>
-                <dd className="mt-2 text-[11px] uppercase tracking-[0.15em] text-earth md:mt-1 md:text-sm md:normal-case md:tracking-normal">
+              <div key={s.label} className="px-2 py-5 md:px-4 md:py-6">
+                <p className="font-display text-[28px] font-semibold leading-none md:text-4xl">{s.value}</p>
+                <p className="mt-2 text-[11px] uppercase tracking-[0.15em] text-earth md:text-xs">
                   <span className="md:hidden">{s.short}</span>
                   <span className="hidden md:inline">{s.label}</span>
-                </dd>
+                </p>
               </div>
             ))}
-          </dl>
+          </div>
 
-          {/* More about us — full width on phones */}
-          <Link
-            href="/about"
-            className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#C6A36A]/70 px-7 text-sm transition hover:bg-[#C6A36A] hover:text-ink md:mt-10 md:inline-flex md:w-auto"
-          >
-            More about us <span aria-hidden="true">→</span>
-          </Link>
+          {/* More about us — full width on phones. Hidden on the /about page itself. */}
+          {showMoreLink && (
+            <Link
+              href="/about"
+              className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#C6A36A]/70 px-7 text-sm transition hover:bg-[#C6A36A] hover:text-ink md:mt-8 md:inline-flex md:w-auto"
+            >
+              More about us <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
       </div>
 
